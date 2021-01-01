@@ -1,0 +1,1 @@
+This is for the exercise calculator project for the Full Stack Open coursework on TypeScript.

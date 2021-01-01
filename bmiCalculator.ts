@@ -17,13 +17,24 @@ const parseArguments = (args: Array<string>): InputValues => {
     }
 }
 
-const bmiCalculator = (mass: number, height: number, printText: string) => {
-    console.log(printText, mass / (height / 100)**2 )
+const bmiCalculator = (mass: number, height: number): string => {
+    const bmi = mass / (height / 100)**2;
+    if (bmi < 18.5) {
+        return 'Underweight (unhealthy weight)';
+    } else if (bmi >= 18.5 && bmi < 25) {
+        return 'Normal weight (healthy weight)';
+    } else if (bmi >= 25 && bmi < 30) {
+        return 'Overweight (unhealthy weight)';
+    } else if (bmi >= 30) {
+        return 'Obese (very unhealthy weight)';
+    } else {
+        throw new Error('Use correct input')
+    }
 }
 
 try {
     const { mass, height } = parseArguments(process.argv);
-    bmiCalculator(mass, height, `Based on your mass of ${mass} kg and your height of ${height} cm, your BMI is:`);
+    console.log(bmiCalculator(mass, height));
   } catch (e) {
     console.log('Error, something bad happened, message: ', e.message);
   }

@@ -1,47 +1,42 @@
-// interface InputValues {
-//     mass: number;
-//     height: number;
-// }
+interface InputVals {
+    arr: number[];
+    target: number;
+}
 
-// const parseArguments = (args: Array<string>): InputValues => {
-//     if (args.length < 4) throw new Error('Not enough arguments');
-//     if (args.length > 4) throw new Error('Too many arguments');
 
-//     if (!isNaN(Number(args[2])) && !isNaN(Number(args[3]))) {
-//         return {
-//           mass: Number(args[2]),
-//           height: Number(args[3])
-//         }
-//     } else {
-//         throw new Error('Provided values were not numbers!');
-//     }
-// }
+const parseArgs = (args: Array<string>): InputVals => {
+    if (args.length < 4) throw new Error('Not enough arguments');
+    const arr: number[] = []
+    const checkArgs = () => {
+        for (let i = 2; i < args.length; i++) {
+            if (isNaN(Number(args[i]))) {
+                return false
+            } else {
+                arr.push(Number(args[i]))
+            }
+        }
+        return true
+    }
+    if (checkArgs()) {
+        return {
+          target: Number(args[2]),
+          arr
+        }
+    } else {
+        throw new Error('Provided values were not all numbers!');
+    }
+}
+interface Result {
+    periodLength: number;
+    trainingDays: number;
+    success: boolean;
+    rating: number;
+    ratingDescription: string;
+    target: number;
+    average: number;
+}
 
-// const bmiCalculator = (mass: number, height: number): string => {
-//     const bmi = mass / (height / 100)**2;
-//     if (bmi < 18.5) {
-//         return 'Underweight (unhealthy weight)';
-//     } else if (bmi >= 18.5 && bmi < 25) {
-//         return 'Normal weight (healthy weight)';
-//     } else if (bmi >= 25 && bmi < 30) {
-//         return 'Overweight (unhealthy weight)';
-//     } else if (bmi >= 30) {
-//         return 'Obese (very unhealthy weight)';
-//     } else {
-//         throw new Error('Use correct input')
-//     }
-// }
-
-// try {
-//     const { mass, height } = parseArguments(process.argv);
-//     console.log(bmiCalculator(mass, height));
-//   } catch (e) {
-//     console.log('Error, something bad happened, message: ', e.message);
-//   }
-
-type InputArray = [number, number, number, number, number, number, number]
-
-const calculateExercises = (arr: InputArray, target: number) => {
+const calculateExercises = (arr: number[], target: number): Result => {
     const periodLength = arr.length;
     const trainingDays = arr.filter(n => n > 0).length;
     const average = arr.reduce((a, b) => a + b) / arr.length;
@@ -69,4 +64,11 @@ const calculateExercises = (arr: InputArray, target: number) => {
     }
 }
 
-console.log(calculateExercises([1, 1, 1, 1, 1, 1, 1,], 1))
+//console.log(calculateExercises([1, 1, 1, 1, 1, 1], 1))
+
+try {
+    const { arr, target } = parseArgs(process.argv);
+    console.log(calculateExercises(arr, target));
+  } catch (e) {
+    console.log('Error, something bad happened, message: ', e.message);
+  }

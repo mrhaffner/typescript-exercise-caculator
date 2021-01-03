@@ -4,28 +4,28 @@ interface InputVals {
 }
 
 
-const parseArgs = (args: Array<string>): InputVals => {
-    if (args.length < 4) throw new Error('Not enough arguments');
-    const arr: number[] = []
+export const parseArgs = (args: Array<string>): InputVals => {
+    if (args.length < 2) throw new Error('Not enough arguments');
+    const arr: number[] = [];
     const checkArgs = () => {
-        for (let i = 2; i < args.length; i++) {
+        for (let i = 1; i < args.length; i++) {
             if (isNaN(Number(args[i]))) {
-                return false
+                return false;
             } else {
-                arr.push(Number(args[i]))
+                arr.push(Number(args[i]));
             }
         }
-        return true
-    }
+        return true;
+    };
     if (checkArgs()) {
         return {
-          target: Number(args[2]),
+          target: Number(args[0]),
           arr
-        }
+        };
     } else {
         throw new Error('Provided values were not all numbers!');
     }
-}
+};
 interface Result {
     periodLength: number;
     trainingDays: number;
@@ -36,7 +36,7 @@ interface Result {
     average: number;
 }
 
-const calculateExercises = (arr: number[], target: number): Result => {
+export const calculateExercises = (arr: number[], target: number): Result => {
     const periodLength = arr.length;
     const trainingDays = arr.filter(n => n > 0).length;
     const average = arr.reduce((a, b) => a + b) / arr.length;
@@ -50,8 +50,8 @@ const calculateExercises = (arr: number[], target: number): Result => {
         } else {
             return 'overachiever!';
         }
-    }
-    const ratingDescription = getRating()
+    };
+    const ratingDescription = getRating();
 
     return {
         periodLength,
@@ -61,14 +61,14 @@ const calculateExercises = (arr: number[], target: number): Result => {
         ratingDescription,
         target,
         average
-    }
-}
+    };
+};
 
 //console.log(calculateExercises([1, 1, 1, 1, 1, 1], 1))
 
 try {
     const { arr, target } = parseArgs(process.argv);
     console.log(calculateExercises(arr, target));
-  } catch (e) {
-    console.log('Error, something bad happened, message: ', e.message);
+  } catch ({message}) {
+    console.log('Error, something bad happened, message: ', message);
   }
